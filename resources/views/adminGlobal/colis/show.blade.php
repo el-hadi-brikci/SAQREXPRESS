@@ -9,6 +9,7 @@
     <p class="mb-2"><strong>Code suivi :</strong> {{ $colis->code_suivi }}</p>
     <p class="mb-2"><strong>Description :</strong> {{ $colis->description }}</p>
     <p class="mb-2"><strong>Poids :</strong> {{ $colis->poids }} kg</p>
+    <p class="mb-2"><strong>Prix :</strong> {{ number_format($colis->prix, 2) }} DA</p>
     <p class="mb-2"><strong>Client :</strong> {{ $colis->client->nom ?? '-' }}</p>
     <p class="mb-2"><strong>Bureau :</strong> {{ $colis->bureau->nom ?? '-' }}</p>
     
@@ -37,9 +38,7 @@
 
         {{-- Suivi interne --}}
         <p><strong>Saisi par :</strong> {{ $colis->saisiParUser->name ?? '-' }}</p>
-        <p><strong>Date de livraison réelle :</strong> 
-            {{ $colis->date_livraison_reelle ? $colis->date_livraison_reelle->format('d/m/Y H:i') : '-' }}
-        </p>
+        <p><strong>Date de saisie :</strong> {{ $colis->heure_saisie ? \Carbon\Carbon::parse($colis->heure_saisie)->format('d/m/Y H:i') : '-' }}</p>
     </div>
 
     <div class="flex justify-end mt-6 space-x-3">
@@ -64,6 +63,10 @@
                 🗑 Supprimer
             </button>
         </form>
+    </div>
+
+    <div class="print:hidden">
+        <button onclick="window.print()" class="bg-blue-600 text-white px-4 py-2 rounded mb-4">Imprimer le ticket</button>
     </div>
 </div>
 @endsection

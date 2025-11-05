@@ -10,6 +10,7 @@
         <p><strong>Email :</strong> {{ $client->user->email ?? '-' }}</p>
         <p><strong>Téléphone :</strong> {{ $client->telephone }}</p>
         <p><strong>Adresse :</strong> {{ $client->adresse }}</p>
+        <p><strong>Prix total des colis :</strong> {{ number_format($client->colis->sum('prix'), 2) }} DA</p>
     </div>
 
     <div class="flex justify-end mt-6 space-x-3">

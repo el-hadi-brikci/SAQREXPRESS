@@ -19,18 +19,21 @@ class BureauSeeder extends Seeder
             'nom' => 'Bureau Alger Centre',
             'adresse' => 'Rue Didouche Mourad, Alger',
             'region_id' => $alger->id,
+            'wilaya_number' => 16,
         ]);
 
         Bureau::create([
             'nom' => 'Bureau Oran Centre',
             'adresse' => 'Place d’Armes, Oran',
             'region_id' => $oran->id,
+            'wilaya_number' => 31,
         ]);
 
         Bureau::create([
             'nom' => 'Bureau Constantine Est',
             'adresse' => 'Boulevard Aouati Mostefa, Constantine',
             'region_id' => $constantine->id,
+            'wilaya_number' => 25,
         ]);
     }
 }

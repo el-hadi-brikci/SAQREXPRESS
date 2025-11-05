@@ -14,7 +14,7 @@
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label class="block">Code Suivi</label>
-                <input type="text" name="code_suivi" value="{{ old('code_suivi') }}" class="w-full border-gray-300 rounded px-3 py-2">
+                <input type="text" name="code_suivi" value="{{ old('code_suivi') }}" class="w-full border-gray-300 rounded px-3 py-2" placeholder="Généré automatiquement si laissé vide">
             </div>
             <div>
                 <label class="block">Code Barre</label>
@@ -23,6 +23,10 @@
             <div>
                 <label class="block">Poids</label>
                 <input type="number" step="0.01" name="poids" value="{{ old('poids') }}" class="w-full border-gray-300 rounded px-3 py-2">
+            </div>
+            <div>
+                <label class="block">Prix (DA)</label>
+                <input type="number" step="0.01" name="prix" value="{{ old('prix') }}" class="w-full border-gray-300 rounded px-3 py-2" required>
             </div>
             <div>
                 <label class="block">Statut</label>

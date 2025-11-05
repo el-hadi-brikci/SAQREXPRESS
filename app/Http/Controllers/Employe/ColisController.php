@@ -17,8 +17,8 @@ class ColisController extends Controller
 
         $query = Colis::with(['client', 'bureau', 'bureauDestination', 'saisiParUser'])
             ->where(function ($q) use ($user) {
-                $q->where('bureau_id', $user->bureau_id) // Colis qui partent du bureau
-                  ->orWhere('bureau_destination_id', $user->bureau_id); // Colis qui arrivent au bureau
+                $q->where('bureau_id', $user->bureau_id)
+                  ->orWhere('bureau_destination_id', $user->bureau_id);
             });
 
         if ($request->filled('search')) {
@@ -28,7 +28,14 @@ class ColisController extends Controller
             });
         }
 
-        $colis = $query->paginate(10);
+        // Filtre par journée
+        if ($request->filled('jour')) {
+            $jour = $request->jour;
+            $query->whereDate('created_at', $jour);
+        }
+
+        // Tri du plus récent au plus ancien
+        $colis = $query->orderBy('created_at', 'desc')->get();
 
         return view('employe.colis.index', compact('colis'));
     }
@@ -46,6 +53,7 @@ class ColisController extends Controller
             'code_suivi' => 'required|unique:colis,code_suivi',
             'description' => 'nullable|string',
             'poids' => 'nullable|numeric',
+            'prix' => 'required|numeric',
             'statut' => 'required|in:en_attente,en_cours,livr\u00e9,annul\u00e9',
             'bureau_id' => 'required|exists:bureaux,id',
             'client_id' => 'required|exists:clients,id',
@@ -85,6 +93,7 @@ class ColisController extends Controller
         'code_suivi' => 'required|string|unique:colis,code_suivi,' . $colis->id,
         'description' => 'nullable|string',
         'poids' => 'nullable|numeric',
+        'prix' => 'required|numeric',
         'statut' => 'required|in:en_attente,en_cours,livr\u00e9,annul\u00e9',
         'client_id' => 'nullable|exists:clients,id',
         'bureau_id' => 'nullable|exists:bureaux,id',

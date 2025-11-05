@@ -16,6 +16,11 @@
             @error('adresse')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
         </div>
         <div class="mb-4">
+            <label for="wilaya_number" class="block font-medium text-gray-700">Numéro de wilaya</label>
+            <input type="number" id="wilaya_number" name="wilaya_number" value="{{ old('wilaya_number') }}" min="1" max="99" step="1" class="w-full border-gray-300 rounded px-3 py-2 shadow-sm focus:ring-saqr-blue focus:border-saqr-blue">
+            @error('wilaya_number')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+        </div>
+        <div class="mb-4">
             <label class="block font-medium text-gray-700">Région</label>
             <input type="text" value="{{ \App\Models\Region::find($regionId)->nom ?? '' }}" class="w-full border-gray-300 rounded px-3 py-2 bg-gray-100" readonly>
         </div>
@@ -45,6 +50,20 @@
             @error('nom')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
             @enderror
+        </div>
+
+        {{-- Adresse --}}
+        <div class="mb-4">
+            <label for="adresse" class="block font-medium text-gray-700">Adresse</label>
+            <input type="text" id="adresse" name="adresse" value="{{ old('adresse') }}" class="w-full border-gray-300 rounded px-3 py-2 shadow-sm focus:ring-saqr-blue focus:border-saqr-blue">
+            @error('adresse')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+        </div>
+
+        {{-- Numéro de wilaya --}}
+        <div class="mb-4">
+            <label for="wilaya_number" class="block font-medium text-gray-700">Numéro de wilaya</label>
+            <input type="number" id="wilaya_number" name="wilaya_number" value="{{ old('wilaya_number') }}" min="1" max="99" step="1" class="w-full border-gray-300 rounded px-3 py-2 shadow-sm focus:ring-saqr-blue focus:border-saqr-blue">
+            @error('wilaya_number')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
         </div>
 
         {{-- Boutons --}}

@@ -25,7 +25,13 @@ class ColisController extends Controller
                   ->orWhere('code_barre', 'like', '%' . $request->search . '%');
             });
         }
-        $colis = $query->paginate(10);
+        // Filtre par journée
+        if ($request->filled('jour')) {
+            $jour = $request->jour;
+            $query->whereDate('created_at', $jour);
+        }
+        // Tri du plus récent au plus ancien
+        $colis = $query->orderBy('created_at', 'desc')->get();
         return view('adminBureau.colis.index', compact('colis'));
     }
 
@@ -42,6 +48,7 @@ class ColisController extends Controller
             'code_suivi' => 'required|unique:colis,code_suivi',
             'description' => 'nullable|string',
             'poids' => 'nullable|numeric',
+            'prix' => 'required|numeric',
             'statut' => 'required|in:en_attente,en_cours,livré,annulé',
             'bureau_id' => 'required|exists:bureaux,id',
             'client_id' => 'required|exists:clients,id',
@@ -78,6 +85,7 @@ class ColisController extends Controller
             'code_suivi' => 'required|string|unique:colis,code_suivi,' . $colis->id,
             'description' => 'nullable|string',
             'poids' => 'nullable|numeric',
+            'prix' => 'required|numeric',
             'statut' => 'required|in:en_attente,en_cours,livré,annulé',
             'client_id' => 'nullable|exists:clients,id',
             'bureau_id' => 'nullable|exists:bureaux,id',

@@ -35,9 +35,10 @@ class BureauController extends Controller
             'nom' => 'required|string|max:255',
             'adresse' => 'required|string|max:255',
             'region_id' => 'required|exists:regions,id',
+            'wilaya_number' => 'nullable|integer|min:1|max:99',
         ]);
 
-        Bureau::create($request->only(['nom', 'adresse', 'region_id']));
+        Bureau::create($request->only(['nom', 'adresse', 'region_id', 'wilaya_number']));
 
         return redirect()->route('admin.global.bureau.index')
                          ->with('success', 'Bureau ajouté avec succès.');
@@ -70,9 +71,10 @@ class BureauController extends Controller
             'nom' => 'required|string|max:255',
             'adresse' => 'required|string|max:255',
             'region_id' => 'required|exists:regions,id',
+            'wilaya_number' => 'nullable|integer|min:1|max:99',
         ]);
 
-        $bureau->update($request->only(['nom', 'adresse', 'region_id']));
+        $bureau->update($request->only(['nom', 'adresse', 'region_id', 'wilaya_number']));
 
         return redirect()->route('admin.global.bureau.index')
                          ->with('success', 'Bureau mis à jour avec succès.');

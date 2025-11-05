@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminRegion\UserController as AdminRegionUserController
 use App\Http\Controllers\AdminRegion\ClientController as AdminRegionClientController;
 use App\Http\Controllers\AdminRegion\ColisController as AdminRegionColisController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 // Page d'accueil
 Route::get('/', function () {
@@ -76,6 +77,8 @@ Route::prefix('admin/region')->name('admin.region.')->middleware(['auth'])->grou
     Route::get('clients/{client}/colis', [AdminRegionClientController::class, 'colis'])->name('clients.colis');
     // CRUD Colis de la région
     Route::resource('colis', AdminRegionColisController::class)->parameters(['colis' => 'colis']);
+    // Ticket d’un colis (adminRegion)
+    Route::get('colis/{colis}/ticket', [\App\Http\Controllers\AdminRegion\TicketController::class, 'show'])->name('colis.ticket');
 });
 
 // =========================
@@ -101,13 +104,34 @@ Route::prefix('admin/bureau')->name('admin.bureau.')->middleware(['auth'])->grou
 // 🔥 EMPLOYÉ
 // =========================
 Route::prefix('employe')->name('employe.')->middleware(['auth'])->group(function () {
-    Route::get('/', fn() => view('dashboards.employe'))->name('dashboard');
+    Route::get('/', function() {
+        $user = Auth::user();
+        $colisList = \App\Models\Colis::with(['client'])
+            ->where(function ($q) use ($user) {
+                $q->where('bureau_id', $user->bureau_id)
+                  ->orWhere('bureau_destination_id', $user->bureau_id);
+            })
+            ->orderByDesc('created_at')
+            ->take(10)
+            ->get();
+
+        $clients = \App\Models\Client::with(['user', 'colis'])
+            ->whereHas('colis', function ($q) use ($user) {
+                $q->where('bureau_id', $user->bureau_id)
+                  ->orWhere('bureau_destination_id', $user->bureau_id);
+            })
+            ->orderByDesc('id')
+            ->take(10)
+            ->get();
+
+        return view('dashboards.employe', compact('colisList', 'clients'));
+    })->name('dashboard');
 
     // CRUD Clients (Employé)
     Route::resource('clients', \App\Http\Controllers\Employe\ClientController::class);
 
     // CRUD Colis (Employé)
-    Route::resource('colis', \App\Http\Controllers\Employe\ColisController::class);
+    Route::resource('colis', \App\Http\Controllers\Employe\ColisController::class)->parameters(['colis' => 'colis']);
 
     // Gestion du profil employé
     Route::get('/profile', [\App\Http\Controllers\Employe\ProfileController::class, 'edit'])->name('profile.edit');
@@ -116,6 +140,8 @@ Route::prefix('employe')->name('employe.')->middleware(['auth'])->group(function
 
     // Colis d’un client (Employé)
     Route::get('clients/{client}/colis', [\App\Http\Controllers\Employe\ClientController::class, 'colis'])->name('clients.colis');
+    // Ticket d’un colis (employe)
+    Route::get('colis/{colis}/ticket', [\App\Http\Controllers\Employe\TicketController::class, 'show'])->name('colis.ticket');
 });
 
 // =========================

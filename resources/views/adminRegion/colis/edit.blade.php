@@ -55,6 +55,10 @@
             <input type="number" step="0.01" name="poids" class="form-input w-full" value="{{ old('poids', $colis->poids) }}">
         </div>
         <div class="mb-4">
+            <label class="block font-semibold mb-1">Prix (DA)</label>
+            <input type="number" step="0.01" name="prix" class="form-input w-full" value="{{ old('prix', $colis->prix) }}" required>
+        </div>
+        <div class="mb-4">
             <label class="block font-semibold mb-1">Code Barre</label>
             <input type="text" name="code_barre" class="form-input w-full" required value="{{ old('code_barre', $colis->code_barre) }}">
         </div>

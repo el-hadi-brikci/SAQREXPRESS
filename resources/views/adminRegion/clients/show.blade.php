@@ -20,6 +20,10 @@
             <span class="font-medium text-gray-700">Email :</span>
             <span>{{ $client->user->email ?? '—' }}</span>
         </div>
+        <div class="mb-4">
+            <span class="font-medium text-gray-700">Prix total des colis :</span>
+            <span>{{ number_format($client->colis->sum('prix'), 2) }} DA</span>
+        </div>
         <div class="flex justify-end mt-6 space-x-3">
             <a href="{{ route('admin.region.clients.colis', $client) }}" class="px-4 py-2 bg-orange-400 text-white rounded hover:bg-orange-500">📦 Voir les colis</a>
             <a href="{{ route('admin.region.clients.index') }}" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition">Retour</a>

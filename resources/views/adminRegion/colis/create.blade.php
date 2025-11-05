@@ -7,7 +7,7 @@
         @csrf
         <div class="mb-4">
             <label class="block font-semibold mb-1">Code Suivi</label>
-            <input type="text" name="code_suivi" class="form-input w-full" required value="{{ old('code_suivi') }}">
+            <input type="text" name="code_suivi" class="form-input w-full" value="{{ old('code_suivi') }}" placeholder="Généré automatiquement si laissé vide">
         </div>
         <div class="mb-4">
             <label class="block font-semibold mb-1">Client</label>
@@ -52,6 +52,10 @@
         <div class="mb-4">
             <label class="block font-semibold mb-1">Poids (kg)</label>
             <input type="number" step="0.01" name="poids" class="form-input w-full" value="{{ old('poids') }}">
+        </div>
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">Prix (DA)</label>
+            <input type="number" step="0.01" name="prix" class="form-input w-full" value="{{ old('prix') }}" required>
         </div>
         <div class="mb-4">
             <label class="block font-semibold mb-1">Code Barre</label>

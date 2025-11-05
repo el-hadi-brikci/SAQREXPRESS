@@ -9,6 +9,7 @@
     <p class="mb-2"><strong>Code suivi :</strong> {{ $colis->code_suivi }}</p>
     <p class="mb-2"><strong>Description :</strong> {{ $colis->description }}</p>
     <p class="mb-2"><strong>Poids :</strong> {{ $colis->poids }} kg</p>
+    <p class="mb-2"><strong>Prix :</strong> {{ number_format($colis->prix, 2) }} DA</p>
     <p class="mb-2"><strong>Client :</strong> {{ $colis->client->nom ?? '-' }}</p>
     <p class="mb-2"><strong>Bureau :</strong> {{ $colis->bureau->nom ?? '-' }}</p>
     
@@ -64,6 +65,10 @@
                 🗑 Supprimer
             </button>
         </form>
+    </div>
+
+    <div class="print:hidden">
+        <button onclick="window.print()" class="bg-blue-600 text-white px-4 py-2 rounded mb-4">Imprimer le ticket</button>
     </div>
 </div>
 @endsection

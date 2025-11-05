@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     /* Couleurs principales */
-    .bg-saqr-blue { background-color: #0000FF; }
+  .bg-saqr-blue { background-color: #3399FF; }
     .bg-saqr-blue-dark { background-color: #000080; }
     .text-saqr-blue { color: #0000FF; }
 
@@ -59,10 +59,10 @@
     <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
       <input id="parcelId" type="text" placeholder="Entrez l'ID de votre colis" 
              class="w-full sm:w-2/3 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-saqr-blue">
-      <button onclick="checkTracking()" 
-              class="bg-saqr-blue text-white px-6 py-3 rounded-lg hover:bg-saqr-blue-dark active:bg-orange transition">
-        Rechercher
-      </button>
+  <button onclick="checkTracking()" 
+      style="background: linear-gradient(135deg, #3399FF 0%, #000080 100%);" class="text-white px-6 py-3 rounded-lg hover:bg-saqr-blue-dark active:bg-orange transition">
+    Rechercher
+  </button>
     </div>
     <div id="trackingResult" class="mt-6 text-lg text-gray-700"></div>
   </div>
@@ -75,7 +75,7 @@
     <div class="bg-white p-6 rounded-lg shadow text-center">
       <i class="fas fa-shipping-fast text-4xl text-saqr-blue mb-4"></i>
       <h3 class="text-xl font-semibold mb-2">Livraison Express</h3>
-      <p>Recevez vos colis en un temps record grâce à notre réseau logistique optimisé.</p>
+      <p>Livrez vos colis en un temps record grâce à notre réseau logistique optimisé.</p>
     </div>
     <div class="bg-white p-6 rounded-lg shadow text-center">
       <i class="fas fa-map-marked-alt text-4xl text-saqr-blue mb-4"></i>
@@ -95,8 +95,8 @@
   <div class="max-w-4xl mx-auto text-center">
     <h2 class="text-3xl font-bold text-saqr-blue mb-6">À propos de SAQR-EXPRESS</h2>
     <p class="text-lg text-gray-700 leading-relaxed">
-      SAQR-EXPRESS est une entreprise innovante spécialisée dans les solutions de logistique et de livraison en Algérie. 
-      Nous connectons les commerçants, les clients et les transporteurs à travers une plateforme simple et efficace.
+      SAQR EXPRESS est une entreprise algérienne spécialisée dans la livraison rapide et sécurisée de colis à travers toutes les wilayas du pays.
+      Nous accompagnons les particuliers, e-commerçants et entreprises dans l’expédition et la réception de leurs colis grâce à un réseau fiable, un suivi en temps réel et un service client réactif.
     </p>
   </div>
 </section>
@@ -107,7 +107,16 @@
     <h2 class="text-3xl font-bold text-saqr-blue mb-6">Contactez-nous</h2>
     <p class="mb-6">Vous avez des questions ? Écrivez-nous à 
       <a href="mailto:contact@saqr-express.com" class="text-saqr-blue underline hover:text-orange-500">
-        contact@saqr-express.com
+        saqr.m.express@gmail.com
+        
+      </a>
+      <br>
+      <a href="phone:043 22 29 43" class="text-saqr-blue underline hover:text-orange-500">
+        043 22 29 43
+      </a>
+      &nbsp;
+      <a href="phone:0770 36 70 90" class="text-saqr-blue underline hover:text-orange-500">
+        0770 36 70 90
       </a>
     </p>
     <a href="#"
@@ -125,34 +134,36 @@
 <!-- Script JS pour suivi colis -->
 <script>
 function checkTracking() {
-    const codeSuivi = document.getElementById('parcelId').value.trim();
-    const resultDiv = document.getElementById('trackingResult');
-    if (!codeSuivi) {
-        resultDiv.innerHTML = '<span class="text-red-500">Veuillez entrer un ID de colis.</span>';
-        return;
-    }
-    resultDiv.innerHTML = 'Recherche en cours...';
-    fetch(`/tracking/${codeSuivi}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                resultDiv.innerHTML = `<span class='text-red-500'>${data.error}</span>`;
-            } else {
-                resultDiv.innerHTML = `
-                    <div class='bg-gray-100 p-4 rounded shadow text-left'>
-                        <div><strong>Code suivi :</strong> ${data.code_suivi}</div>
-                        <div><strong>Description :</strong> ${data.description ?? '-'}</div>
-                        <div><strong>Statut :</strong> ${data.statut}</div>
-                        <div><strong>Bureau de départ :</strong> ${data.bureau_depart}</div>
-                        <div><strong>Bureau de destination :</strong> ${data.bureau_destination}</div>
-                        <div><strong>Client :</strong> ${data.client}</div>
-                    </div>
-                `;
-            }
-        })
-        .catch(() => {
-            resultDiv.innerHTML = '<span class="text-red-500">Erreur lors de la recherche du colis.</span>';
-        });
+  const codeSuivi = document.getElementById('parcelId').value.trim();
+  const resultDiv = document.getElementById('trackingResult');
+  if (!codeSuivi) {
+    resultDiv.innerHTML = '<span class="text-red-500">Veuillez entrer un ID de colis.</span>';
+    return;
+  }
+  resultDiv.innerHTML = 'Recherche en cours...';
+  fetch(`/tracking/${codeSuivi}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.error) {
+        resultDiv.innerHTML = `<span class='text-red-500'>${data.error}</span>`;
+      } else {
+        resultDiv.innerHTML = `
+          <div class='bg-gray-100 p-4 rounded shadow text-left max-w-md mx-auto'>
+                        <h2 style="font-size:20px; text-align:center; margin-bottom:10px; font-weight:bold;">Colis : ${data.code_suivi}</h2>
+            <div style="margin-bottom:10px;">
+              <p style="margin:4px 0; font-size:17px;"><strong>Client :</strong> ${data.client ?? '-'}</p>
+              <p style="margin:4px 0; font-size:17px;"><strong>Bureau :</strong> ${data.bureau_depart ?? '-'} - ${data.bureau_destination ?? '-'}</p>
+              <p style="margin:4px 0; font-size:17px;"><strong>Poids :</strong> ${data.poids ?? '-'} kg</p>
+              <p style="margin:4px 0; font-size:17px;"><strong>Prix :</strong> ${data.prix ? Number(data.prix).toFixed(2) : '-'} DA</p>
+                            <p style="margin:4px 0; font-size:17px;"><strong>Date :</strong> ${data.heure_saisie ? new Date(data.heure_saisie).toLocaleString('fr-FR') : '-'}</p>
+            </div>
+          </div>
+        `;
+      }
+    })
+    .catch(() => {
+      resultDiv.innerHTML = '<span class="text-red-500">Erreur lors de la recherche du colis.</span>';
+    });
 }
 </script>
 

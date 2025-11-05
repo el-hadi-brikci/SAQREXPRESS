@@ -5,6 +5,16 @@
 <div class="max-w-4xl mx-auto mt-10">
     <h1 class="text-3xl font-bold text-saqr-blue mb-6">➕ Ajouter un Colis</h1>
 
+    @if ($errors->any())
+        <div class="mb-4 p-3 bg-red-100 text-red-700 rounded">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form method="POST" action="{{ route('admin.global.colis.store') }}" 
           class="bg-white p-6 rounded shadow-md border border-gray-200">
         @csrf
@@ -12,15 +22,18 @@
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label class="block">Code Suivi</label>
-                <input type="text" name="code_suivi" value="{{ old('code_suivi') }}" class="w-full border-gray-300 rounded px-3 py-2">
+                <input type="text" name="code_suivi" value="{{ old('code_suivi') }}" class="w-full border-gray-300 rounded px-3 py-2" placeholder="Généré automatiquement si laissé vide">
             </div>
-            <div>
-                <label class="block">Code Barre</label>
-                <input type="text" name="code_barre" value="{{ old('code_barre') }}" class="w-full border-gray-300 rounded px-3 py-2">
-            </div>
+
+            {{-- Champ Code Barre masqué, facultatif --}}
+            <input type="hidden" name="code_barre" value="{{ old('code_barre') }}">
             <div>
                 <label class="block">Poids</label>
                 <input type="number" step="0.01" name="poids" value="{{ old('poids') }}" class="w-full border-gray-300 rounded px-3 py-2">
+            </div>
+            <div>
+                <label class="block">Prix (DA)</label>
+                <input type="number" step="0.01" name="prix" value="{{ old('prix') }}" class="w-full border-gray-300 rounded px-3 py-2" required>
             </div>
             <div>
                 <label class="block">Statut</label>

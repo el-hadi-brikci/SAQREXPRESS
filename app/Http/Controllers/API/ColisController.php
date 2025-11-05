@@ -1,39 +1,67 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Colis;
-use App\Models\Bureau;
-use App\Models\Client;
 use Illuminate\Http\Request;
 
 class ColisController extends Controller
 {
-    public function index() { return Colis::with(['bureau','client'])->get(); }
-    public function create() { /* return view('admin.colis.create', ['bureaux'=>Bureau::all(),'clients'=>Client::all()]); */ }
-    public function store(Request $request) {
-        $request->validate([
-            'code_suivi'=>'required|unique:colis,code_suivi',
-            'description'=>'nullable|string',
-            'poids'=>'nullable|numeric',
-            'statut'=>'required|string',
-            'bureau_id'=>'required|exists:bureaux,id',
-            'client_id'=>'required|exists:clients,id',
-        ]);
-        return Colis::create($request->all());
+    /**
+     * GET /api/colis
+     * Optional query: search, jour (YYYY-MM-DD)
+     */
+    public function index(Request $request)
+    {
+        $query = Colis::with(['client', 'bureau', 'bureauDestination', 'saisiParUser']);
+
+        if ($request->filled('search')) {
+            $query->where('code_suivi', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('jour')) {
+            $query->whereDate('created_at', $request->jour);
+        }
+
+        $colis = $query->orderBy('created_at', 'desc')->paginate(20);
+        return response()->json($colis);
     }
-    public function show(Colis $coli) { return $coli->load(['bureau','client']); }
-    public function edit(Colis $coli) { /* return view('admin.colis.edit', compact('coli')); */ }
-    public function update(Request $request, Colis $coli) {
-        $request->validate([
-            'description'=>'nullable|string',
-            'poids'=>'nullable|numeric',
-            'statut'=>'required|string',
-            'bureau_id'=>'required|exists:bureaux,id',
-            'client_id'=>'required|exists:clients,id',
-        ]);
-        $coli->update($request->all());
-        return $coli;
+
+    /**
+     * GET /api/colis/{colis}
+     */
+    public function show(Colis $colis)
+    {
+        $colis->load(['client', 'bureau', 'bureauDestination', 'saisiParUser']);
+        return response()->json($colis);
     }
-    public function destroy(Colis $coli) { $coli->delete(); return response()->json(['message'=>'Colis supprimé']); }
+
+    /**
+     * GET /api/tracking/{code_suivi}
+     * Public endpoint
+     */
+    public function tracking($code_suivi)
+    {
+        $colis = Colis::with(['client', 'bureau', 'bureauDestination'])
+            ->where('code_suivi', $code_suivi)
+            ->first();
+
+        if (! $colis) {
+            return response()->json(['error' => 'Colis introuvable'], 404);
+        }
+
+        return response()->json([
+            'code_suivi' => $colis->code_suivi,
+            'description' => $colis->description,
+            'statut' => ucfirst($colis->statut),
+            'bureau_depart' => $colis->bureau->nom ?? '-',
+            'bureau_destination' => $colis->bureauDestination->nom ?? '-',
+            'client' => $colis->client->nom ?? '-',
+            'poids' => $colis->poids ?? '-',
+            'prix' => $colis->prix ?? '-',
+            'heure_saisie' => $colis->heure_saisie ?? null,
+        ]);
+    }
 }
+                    $colis = $query->orderBy('created_at', 'desc')->paginate(20);

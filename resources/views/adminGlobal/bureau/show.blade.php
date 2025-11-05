@@ -8,6 +8,7 @@
         <p class="mb-2"><strong>ID :</strong> {{ $bureau->id }}</p>
         <p class="mb-2"><strong>Nom :</strong> {{ $bureau->nom }}</p>
         <p class="mb-2"><strong>Adresse :</strong> {{ $bureau->adresse }}</p>
+            <p class="mb-2"><strong>Wilaya :</strong> {{ $bureau->wilaya_number ?? '—' }}</p>
         <p><strong>Région :</strong> {{ $bureau->region->nom ?? '—' }}</p>
     </div>
 

@@ -29,7 +29,7 @@
               <td class="py-3 px-4">{{ $colis->statut }}</td>
               <td class="py-3 px-4">{{ $colis->created_at->format('Y-m-d') }}</td>
               <td class="py-3 px-4">
-                <a href="{{ route('colis.show', $colis->id) }}" class="text-saqr-blue underline hover:text-orange-500">Détails</a>
+                <a href="{{ route('employe.colis.show', $colis->id) }}" class="text-saqr-blue underline hover:text-orange-500">Détails</a>
               </td>
             </tr>
           @empty

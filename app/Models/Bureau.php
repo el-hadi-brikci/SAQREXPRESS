@@ -11,7 +11,7 @@ class Bureau extends Model
 
     protected $table = 'bureaux';
 
-    protected $fillable = ['nom', 'adresse', 'region_id'];
+    protected $fillable = ['nom', 'adresse', 'region_id', 'wilaya_number'];
 
     // Un bureau appartient à une région
     public function region()

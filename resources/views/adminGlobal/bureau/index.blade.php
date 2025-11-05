@@ -28,6 +28,7 @@
                     <th class="py-3 px-4 text-left">Nom</th>
                     <th class="py-3 px-4 text-left">Adresse</th>
                     <th class="py-3 px-4 text-left">Région</th>
+                    <th class="py-3 px-4 text-left">Wilaya</th>
                     <th class="py-3 px-4 text-left">Actions</th>
                 </tr>
             </thead>
@@ -38,6 +39,7 @@
                         <td class="py-3 px-4">{{ $bureau->nom }}</td>
                         <td class="py-3 px-4">{{ $bureau->adresse }}</td>
                         <td class="py-3 px-4">{{ $bureau->region->nom ?? '—' }}</td>
+                        <td class="py-3 px-4">{{ $bureau->wilaya_number ?? '—' }}</td>
                         <td class="py-3 px-4 flex space-x-4">
                             <a href="{{ route('admin.global.bureau.show', $bureau) }}" class="text-blue-600 hover:underline">Voir</a>
                             <a href="{{ route('admin.global.bureau.edit', $bureau) }}" class="text-yellow-600 hover:underline">Modifier</a>
@@ -50,7 +52,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="py-4 text-center text-gray-500">Aucun bureau trouvé</td>
+                        <td colspan="6" class="py-4 text-center text-gray-500">Aucun bureau trouvé</td>
                     </tr>
                 @endforelse
             </tbody>

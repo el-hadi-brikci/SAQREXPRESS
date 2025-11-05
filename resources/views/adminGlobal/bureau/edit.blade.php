@@ -39,6 +39,15 @@
             @error('region_id') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
         </div>
 
+        {{-- Numéro de wilaya --}}
+        <div class="mb-4">
+            <label for="wilaya_number" class="block font-medium text-gray-700">Numéro de wilaya</label>
+            <input type="number" id="wilaya_number" name="wilaya_number" value="{{ old('wilaya_number', $bureau->wilaya_number) }}"
+                   min="1" max="99" step="1"
+                   class="w-full border-gray-300 rounded px-3 py-2 focus:ring-saqr-blue focus:border-saqr-blue">
+            @error('wilaya_number') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+        </div>
+
         <div class="flex justify-end space-x-3">
             <a href="{{ route('admin.global.bureau.index') }}" class="px-4 py-2 bg-gray-300 rounded">⬅ Annuler</a>
             <button type="submit" class="px-4 py-2 bg-saqr-blue text-white rounded hover:bg-orange-500">✅ Mettre à jour</button>

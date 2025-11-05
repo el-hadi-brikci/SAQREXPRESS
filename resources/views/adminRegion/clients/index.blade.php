@@ -15,6 +15,7 @@
                     <th class="py-3 px-4 text-left">Téléphone</th>
                     <th class="py-3 px-4 text-left">Adresse</th>
                     <th class="py-3 px-4 text-left">Email</th>
+                    <th class="py-3 px-4 text-left">Prix</th>
                     <th class="py-3 px-4 text-left">Actions</th>
                 </tr>
             </thead>
@@ -26,6 +27,7 @@
                         <td class="py-3 px-4">{{ $client->telephone }}</td>
                         <td class="py-3 px-4">{{ $client->adresse }}</td>
                         <td class="py-3 px-4">{{ $client->user->email ?? '—' }}</td>
+                        <td class="py-3 px-4">{{ number_format($client->colis->sum('prix'), 2) }} DA</td>
                         <td class="py-3 px-4 flex space-x-4">
                             <a href="{{ route('admin.region.clients.show', $client) }}" class="text-blue-600 hover:underline">Voir</a>
                             <a href="{{ route('admin.region.clients.edit', $client) }}" class="text-yellow-600 hover:underline">Modifier</a>
@@ -38,7 +40,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="py-4 text-center text-gray-500">Aucun client trouvé</td>
+                        <td colspan="7" class="py-4 text-center text-gray-500">Aucun client trouvé</td>
                     </tr>
                 @endforelse
             </tbody>

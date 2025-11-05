@@ -6,9 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+// Intelephense may complain if laravel/sanctum isn't installed in this environment.
+// If the real trait does not exist, require a stub that defines
+// Laravel\Sanctum\HasApiTokens for static analysis only.
+if (!trait_exists('Laravel\\Sanctum\\HasApiTokens')) {
+    $stub = __DIR__ . '/../../stubs/Laravel/Sanctum/HasApiTokens.php';
+    if (file_exists($stub)) {
+        require_once $stub;
+    }
+}
+
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use \Laravel\Sanctum\HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
         'name',

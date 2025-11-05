@@ -23,6 +23,10 @@
                 <input type="number" step="0.01" name="poids" value="{{ old('poids', $colis->poids) }}" class="w-full border-gray-300 rounded px-3 py-2">
             </div>
             <div>
+                <label class="block">Prix (DA)</label>
+                <input type="number" step="0.01" name="prix" value="{{ old('prix', $colis->prix) }}" class="w-full border-gray-300 rounded px-3 py-2" required>
+            </div>
+            <div>
                 <label class="block">Statut</label>
                 <select name="statut" class="w-full border-gray-300 rounded px-3 py-2">
                     <option value="en_attente" {{ $colis->statut == 'en_attente' ? 'selected' : '' }}>En attente</option>

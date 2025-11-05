@@ -24,12 +24,13 @@
     <table class="min-w-full bg-white border border-gray-200 shadow">
         <thead class="bg-saqr-blue text-white">
             <tr>
-                <th class="py-2 px-3">ID</th>
-                <th class="py-2 px-3">Nom</th>
-                <th class="py-2 px-3">Email</th>
-                <th class="py-2 px-3">Téléphone</th>
-                <th class="py-2 px-3">Adresse</th>
-                <th class="py-2 px-3">Actions</th>
+                <th class="py-2 px-3 text-left">ID</th>
+                <th class="py-2 px-3 text-left">Nom</th>
+                <th class="py-2 px-3 text-left">Email</th>
+                <th class="py-2 px-3 text-left">Téléphone</th>
+                <th class="py-2 px-3 text-left">Adresse</th>
+                <th class="py-2 px-3 text-left">Prix</th>
+                <th class="py-2 px-3 text-left">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -40,6 +41,7 @@
                     <td class="py-2 px-3">{{ $client->user->email ?? '-' }}</td>
                     <td class="py-2 px-3">{{ $client->telephone }}</td>
                     <td class="py-2 px-3">{{ $client->adresse }}</td>
+                    <td class="py-2 px-3">{{ number_format($client->colis->sum('prix'), 2) }} DA</td>
                     <td class="py-2 px-3 flex space-x-3">
                         <a href="{{ route('employe.clients.show', $client) }}" class="text-blue-600 hover:underline">Voir</a>
                         <a href="{{ route('employe.clients.edit', $client) }}" class="text-yellow-600 hover:underline">Modifier</a>
@@ -51,7 +53,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" class="py-4 text-center text-gray-500">Aucun client trouvé</td>
+                    <td colspan="7" class="py-4 text-center text-gray-500">Aucun client trouvé</td>
                 </tr>
             @endforelse
         </tbody>

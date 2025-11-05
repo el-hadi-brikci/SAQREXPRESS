@@ -21,7 +21,14 @@ class ColisController extends Controller
             });
         }
 
-        $colis = $query->paginate(10);
+        // Filtre par journée
+        if ($request->filled('jour')) {
+            $jour = $request->jour;
+            $query->whereDate('created_at', $jour);
+        }
+
+        // Tri du plus récent au plus ancien
+        $colis = $query->orderBy('created_at', 'desc')->get();
 
         return view('adminGlobal.colis.index', compact('colis'));
     }
@@ -36,13 +43,15 @@ class ColisController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'code_suivi' => 'required|unique:colis,code_suivi',
+            // code_suivi will be généré automatiquement si non fourni
+            'code_suivi' => 'nullable|unique:colis,code_suivi',
             'description' => 'nullable|string',
             'poids' => 'nullable|numeric',
+            'prix' => 'required|numeric',
             'statut' => 'required|in:en_attente,en_cours,livré,annulé',
             'bureau_id' => 'required|exists:bureaux,id',
             'client_id' => 'required|exists:clients,id',
-            'code_barre' => 'required|string|unique:colis,code_barre',
+            'code_barre' => 'nullable|string|unique:colis,code_barre',
             'numero_voiture' => 'nullable|string',
             'telephone_chauffeur' => 'nullable|string',
             'telephone_envoyeur' => 'nullable|string',
@@ -55,7 +64,7 @@ class ColisController extends Controller
 
         Colis::create($validated);
 
-        return redirect()->route('adminGlobal.colis.index')
+    return redirect()->route('admin.global.colis.index')
                          ->with('success', 'Colis ajouté avec succès ✅');
     }
 
@@ -74,10 +83,11 @@ class ColisController extends Controller
 
     public function update(Request $request, Colis $colis)
 {
-    $validated = $request->validate([
-        'code_suivi' => 'required|string|unique:colis,code_suivi,' . $colis->id,
+        $validated = $request->validate([
+            'code_suivi' => 'nullable|string|unique:colis,code_suivi,' . $colis->id,
         'description' => 'nullable|string',
         'poids' => 'nullable|numeric',
+        'prix' => 'required|numeric',
         'statut' => 'required|in:en_attente,en_cours,livré,annulé',
         'client_id' => 'nullable|exists:clients,id',
         'bureau_id' => 'nullable|exists:bureaux,id',
@@ -94,7 +104,7 @@ class ColisController extends Controller
         'saisi_par' => Auth::id(),
     ]));
 
-    return redirect()->route('adminGlobal.colis.index')
+    return redirect()->route('admin.global.colis.index')
                      ->with('success', 'Colis mis à jour avec succès ✅');
 }
 
@@ -102,7 +112,7 @@ class ColisController extends Controller
     public function destroy(Colis $colis)
     {
         $colis->delete();
-        return redirect()->route('adminGlobal.colis.index')
+    return redirect()->route('admin.global.colis.index')
                      ->with('success', 'Colis supprimé avec succès.');
     }
 
@@ -127,6 +137,9 @@ class ColisController extends Controller
             'bureau_depart' => $colis->bureau->nom ?? '-',
             'bureau_destination' => $colis->bureauDestination->nom ?? '-',
             'client' => $colis->client->nom ?? '-',
+            'poids' => $colis->poids ?? '-',
+            'prix' => $colis->prix ?? '-',
+            'heure_saisie' => $colis->heure_saisie ?? null,
         ]);
     }
 }
