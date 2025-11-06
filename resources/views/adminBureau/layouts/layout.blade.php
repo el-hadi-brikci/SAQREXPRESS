@@ -20,7 +20,7 @@
   <!-- Header -->
   <nav class="bg-gradient-saqr text-white py-4 px-6 flex justify-between items-center">
     <div class="text-xl font-bold text-[#FFA500]">
-      <img src="{{ asset('logo.jpg') }}" alt="Saqr-Express" class="inline-block h-6 mr-2 align-middle">
+  <img src="{{ asset('logo.png') }}" alt="Saqr-Express" class="inline-block h-6 mr-2 align-middle">
       <span class="align-middle">Saqr-Express</span>
     </div>
     <ul class="flex items-center space-x-6">

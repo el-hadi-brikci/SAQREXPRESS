@@ -16,7 +16,7 @@
 
     <!-- Logo -->
     <div class="mb-8 text-3xl font-bold text-orange-500 flex items-center">
-        <img src="{{ asset('logo.jpg') }}" alt="Saqr-Express" class="inline-block h-8 mr-2 align-middle">
+    <img src="{{ asset('logo.png') }}" alt="Saqr-Express" class="inline-block h-8 mr-2 align-middle">
         <span class="align-middle">Saqr-Express</span>
     </div>
 
