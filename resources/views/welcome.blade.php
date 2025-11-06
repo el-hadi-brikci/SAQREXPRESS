@@ -28,7 +28,8 @@
 <nav class="bg-gradient-saqr text-white py-4 px-6 flex justify-between items-center">
   <!-- Logo -->
   <div class="text-xl font-bold text-orange-500">
-    <i class="fas fa-dove mr-2"></i> SAQR-EXPRESS
+    <img src="{{ asset('logo.jpg') }}" alt="SAQR-EXPRESS" class="inline-block h-6 mr-2 align-middle">
+    <span class="align-middle">SAQR-EXPRESS</span>
   </div>
 
   <!-- Menu -->
