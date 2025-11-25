@@ -57,6 +57,7 @@
             <p style="margin:4px 0; font-size:17px;"><strong>Client :</strong> {{ $colis->client->nom ?? '-' }}</p>
             <p style="margin:4px 0; font-size:17px;"><strong>Bureau :</strong> {{ $colis->bureau->nom ?? '-' }} - {{ $colis->bureauDestination->nom ?? '-' }}</p>
             <p style="margin:4px 0; font-size:17px;"><strong>Poids :</strong> {{ $colis->poids }} kg</p>
+            <p style="margin:4px 0; font-size:17px;"><strong>Statut :</strong> {{ ucfirst($colis->statut) }}</p>
             <p style="margin:4px 0; font-size:17px;"><strong>Prix :</strong> {{ number_format($colis->prix, 2) }} DA</p>
             <p style="margin:4px 0; font-size:17px;"><strong>Date :</strong> {{ now()->format('d/m/Y H:i') }}</p>
         </div>

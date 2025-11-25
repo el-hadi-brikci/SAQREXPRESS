@@ -7,16 +7,16 @@
         @csrf
         <div class="mb-4">
             <label class="block font-semibold mb-1">Code Suivi</label>
-            <input type="text" name="code_suivi" class="form-input w-full" value="{{ old('code_suivi') }}" placeholder="Généré automatiquement si laissé vide">
+            <input type="text" name="code_suivi" class="form-input w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 text-gray-600 cursor-not-allowed" value="{{ old('code_suivi') }}" placeholder="Généré automatiquement" readonly>
         </div>
         <div class="mb-4">
             <label class="block font-semibold mb-1">Client</label>
-            <select name="client_id" class="form-select w-full" required>
-                <option value="">Sélectionner...</option>
+            <input list="client-list" name="client_name" value="{{ old('client_name') }}" class="form-input w-full border border-gray-300 rounded px-3 py-2" placeholder="Tapez un nom ou choisissez..." autocomplete="off" />
+            <datalist id="client-list">
                 @foreach($clients as $client)
-                    <option value="{{ $client->id }}" {{ old('client_id') == $client->id ? 'selected' : '' }}>{{ $client->nom }}</option>
+                    <option value="{{ $client->nom }}"></option>
                 @endforeach
-            </select>
+            </datalist>
         </div>
         <div class="mb-4">
             <label class="block font-semibold mb-1">Bureau de départ</label>
@@ -38,7 +38,7 @@
         </div>
         <div class="mb-4">
             <label class="block font-semibold mb-1">Statut</label>
-            <select name="statut" class="form-select w-full" required>
+            <select name="statut" class="form-select w-full border border-gray-300 rounded px-3 py-2" required>
                 <option value="en_attente">En attente</option>
                 <option value="en_cours">En cours</option>
                 <option value="livré">Livré</option>
@@ -51,15 +51,15 @@
         </div>
         <div class="mb-4">
             <label class="block font-semibold mb-1">Poids (kg)</label>
-            <input type="number" step="0.01" name="poids" class="form-input w-full" value="{{ old('poids') }}">
+            <input type="number" step="0.01" name="poids" class="form-input w-full border border-gray-300 rounded px-3 py-2" value="{{ old('poids') }}">
         </div>
         <div class="mb-4">
             <label class="block font-semibold mb-1">Prix (DA)</label>
             <input type="number" step="0.01" name="prix" class="form-input w-full" value="{{ old('prix') }}" required>
         </div>
         <div class="mb-4">
-            <label class="block font-semibold mb-1">Code Barre</label>
-            <input type="text" name="code_barre" class="form-input w-full" required value="{{ old('code_barre') }}">
+            {{-- Code barre masqué / facultatif (généré automatiquement si nécessaire) --}}
+            <input type="hidden" name="code_barre" value="{{ old('code_barre') }}">
         </div>
         <div class="mb-4">
             <label class="block font-semibold mb-1">Numéro Voiture</label>
@@ -79,7 +79,7 @@
         </div>
         <div class="mb-4">
             <label class="block font-semibold mb-1">Date livraison réelle</label>
-            <input type="datetime-local" name="date_livraison_reelle" class="form-input w-full" value="{{ old('date_livraison_reelle') }}">
+            <input type="datetime-local" name="date_livraison_reelle" class="form-input w-full border border-gray-300 rounded px-3 py-2" value="{{ old('date_livraison_reelle') }}">
         </div>
         <div class="flex justify-end">
             <button type="submit" class="bg-saqr-blue text-white px-6 py-2 rounded hover:bg-orange-500 transition">Enregistrer</button>

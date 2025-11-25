@@ -45,14 +45,14 @@ class ColisController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'code_suivi' => 'required|unique:colis,code_suivi',
+            'code_suivi' => 'nullable|unique:colis,code_suivi',
             'description' => 'nullable|string',
             'poids' => 'nullable|numeric',
             'prix' => 'required|numeric',
             'statut' => 'required|in:en_attente,en_cours,livré,annulé',
             'bureau_id' => 'required|exists:bureaux,id',
-            'client_id' => 'required|exists:clients,id',
-            'code_barre' => 'required|string|unique:colis,code_barre',
+            'client_name' => 'required|string',
+            'code_barre' => 'nullable|string|unique:colis,code_barre',
             'numero_voiture' => 'nullable|string',
             'telephone_chauffeur' => 'nullable|string',
             'telephone_envoyeur' => 'nullable|string',
@@ -60,6 +60,17 @@ class ColisController extends Controller
             'bureau_destination_id' => 'nullable|exists:bureaux,id',
             'date_livraison_reelle' => 'nullable|date',
         ]);
+
+        // Resolve client by name or create
+        $clientName = trim($validated['client_name']);
+        $client = Client::whereRaw('LOWER(nom) = ?', [mb_strtolower($clientName)])->first();
+        if (! $client) {
+            $client = Client::create(['nom' => $clientName]);
+        }
+
+        $validated['client_id'] = $client->id;
+        unset($validated['client_name']);
+
         $validated['saisi_par'] = Auth::id();
         Colis::create($validated);
         return redirect()->route('admin.bureau.colis.index')

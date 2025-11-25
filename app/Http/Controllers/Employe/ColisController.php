@@ -49,15 +49,17 @@ class ColisController extends Controller
 
     public function store(Request $request)
     {
+
         $validated = $request->validate([
-            'code_suivi' => 'required|unique:colis,code_suivi',
+            // code_suivi will be generated automatically if left empty
+            'code_suivi' => 'nullable|unique:colis,code_suivi',
             'description' => 'nullable|string',
             'poids' => 'nullable|numeric',
             'prix' => 'required|numeric',
-            'statut' => 'required|in:en_attente,en_cours,livr\u00e9,annul\u00e9',
+            'statut' => 'required|in:en_attente,en_cours,livré,annulé',
             'bureau_id' => 'required|exists:bureaux,id',
-            'client_id' => 'required|exists:clients,id',
-            'code_barre' => 'required|string|unique:colis,code_barre',
+            'client_name' => 'required|string',
+            'code_barre' => 'nullable|string|unique:colis,code_barre',
             'numero_voiture' => 'nullable|string',
             'telephone_chauffeur' => 'nullable|string',
             'telephone_envoyeur' => 'nullable|string',
@@ -66,12 +68,24 @@ class ColisController extends Controller
             'date_livraison_reelle' => 'nullable|date',
         ]);
 
+        // Resolve client: find case-insensitive by name or create a new client
+        $clientName = trim($validated['client_name']);
+        $client = Client::whereRaw('LOWER(nom) = ?', [mb_strtolower($clientName)])->first();
+        if (! $client) {
+            $client = Client::create([
+                'nom' => $clientName,
+            ]);
+        }
+
+        // Prepare data for Colis creation
+        $validated['client_id'] = $client->id;
+        unset($validated['client_name']);
         $validated['saisi_par'] = Auth::id();
 
         Colis::create($validated);
 
-        return redirect()->route('employe.colis.index')
-                         ->with('success', 'Colis ajout\u00e9 avec succ\u00e8s \u2705');
+    return redirect()->route('employe.colis.index')
+             ->with('success', 'Colis Créé');
     }
 
     public function show(Colis $colis)
@@ -94,7 +108,7 @@ class ColisController extends Controller
         'description' => 'nullable|string',
         'poids' => 'nullable|numeric',
         'prix' => 'required|numeric',
-        'statut' => 'required|in:en_attente,en_cours,livr\u00e9,annul\u00e9',
+    'statut' => 'required|in:en_attente,en_cours,livré,annulé',
         'client_id' => 'nullable|exists:clients,id',
         'bureau_id' => 'nullable|exists:bureaux,id',
         'code_barre' => 'nullable|string|unique:colis,code_barre,' . $colis->id,
@@ -111,15 +125,15 @@ class ColisController extends Controller
     ]));
 
     return redirect()->route('employe.colis.index')
-                     ->with('success', 'Colis mis \u00e0 jour avec succ\u00e8s \u2705');
+                     ->with('success', 'Colis mis à jour avec succès ✅');
 }
 
 
     public function destroy(Colis $colis)
     {
         $colis->delete();
-        return redirect()->route('employe.colis.index')
-                     ->with('success', 'Colis supprim\u00e9 avec succ\u00e8s.');
+    return redirect()->route('employe.colis.index')
+             ->with('success', 'Colis supprimé avec succès ✅');
     }
 
     public function ticket(Colis $colis)

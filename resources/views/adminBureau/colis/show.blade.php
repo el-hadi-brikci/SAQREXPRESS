@@ -9,12 +9,7 @@
     <p class="mb-2"><strong>Code suivi :</strong> {{ $colis->code_suivi }}</p>
     <p class="mb-2"><strong>Description :</strong> {{ $colis->description }}</p>
     <p class="mb-2"><strong>Poids :</strong> {{ $colis->poids }} kg</p>
-    <p class="mb-2"><strong>Prix :</strong> {{ number_format($colis->prix, 2) }} DA</p>
-    <p class="mb-2"><strong>Client :</strong> {{ $colis->client->nom ?? '-' }}</p>
-    <p class="mb-2"><strong>Bureau :</strong> {{ $colis->bureau->nom ?? '-' }}</p>
-    
-    {{-- Statut avec couleur dynamique --}}
-    <p>
+    <p class="mb-2">
         <strong>Statut :</strong>
         <span class="px-2 py-1 rounded text-white {{ [
             'en_attente' => 'bg-yellow-500',
@@ -24,9 +19,11 @@
             {{ ucfirst($colis->statut) }}
         </span>
     </p>
+    <p class="mb-2"><strong>Prix :</strong> {{ number_format($colis->prix, 2) }} DA</p>
+    <p class="mb-2"><strong>Client :</strong> {{ $colis->client->nom ?? '-' }}</p>
+    <p class="mb-2"><strong>Bureau :</strong> {{ $colis->bureau->nom ?? '-' }}</p>
 
         {{-- Relations --}}
-        <p><strong>Client :</strong> {{ $colis->client->nom ?? '-' }}</p>
         <p><strong>Bureau d'origine :</strong> {{ $colis->bureau->nom ?? '-' }}</p>
         <p><strong>Bureau de destination :</strong> {{ $colis->bureauDestination->nom ?? '-' }}</p>
 

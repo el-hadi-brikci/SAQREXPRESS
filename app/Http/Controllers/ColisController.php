@@ -50,7 +50,7 @@ class ColisController extends Controller
             'prix' => 'required|numeric',
             'statut' => 'required|in:en_attente,en_cours,livré,annulé',
             'bureau_id' => 'required|exists:bureaux,id',
-            'client_id' => 'required|exists:clients,id',
+            'client_name' => 'required|string',
             'code_barre' => 'nullable|string|unique:colis,code_barre',
             'numero_voiture' => 'nullable|string',
             'telephone_chauffeur' => 'nullable|string',
@@ -60,12 +60,21 @@ class ColisController extends Controller
             'date_livraison_reelle' => 'nullable|date',
         ]);
 
-        $validated['saisi_par'] = Auth::id();
+        // Resolve client by name (case-insensitive) or create
+        $clientName = trim($validated['client_name']);
+        $client = Client::whereRaw('LOWER(nom) = ?', [mb_strtolower($clientName)])->first();
+        if (! $client) {
+            $client = Client::create(['nom' => $clientName]);
+        }
 
+        $validated['client_id'] = $client->id;
+        unset($validated['client_name']);
+
+        $validated['saisi_par'] = Auth::id();
         Colis::create($validated);
 
     return redirect()->route('admin.global.colis.index')
-                         ->with('success', 'Colis ajouté avec succès ✅');
+                         ->with('success', 'Colis Créé');
     }
 
     public function show(Colis $colis)

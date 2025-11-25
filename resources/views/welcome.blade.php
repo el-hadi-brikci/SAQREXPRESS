@@ -155,6 +155,7 @@ function checkTracking() {
               <p style="margin:4px 0; font-size:17px;"><strong>Client :</strong> ${data.client ?? '-'}</p>
               <p style="margin:4px 0; font-size:17px;"><strong>Bureau :</strong> ${data.bureau_depart ?? '-'} - ${data.bureau_destination ?? '-'}</p>
               <p style="margin:4px 0; font-size:17px;"><strong>Poids :</strong> ${data.poids ?? '-'} kg</p>
+              <p style="margin:4px 0; font-size:17px;"><strong>Statut :</strong> ${data.statut ?? '-'}</p>
               <p style="margin:4px 0; font-size:17px;"><strong>Prix :</strong> ${data.prix ? Number(data.prix).toFixed(2) : '-'} DA</p>
                             <p style="margin:4px 0; font-size:17px;"><strong>Date :</strong> ${data.heure_saisie ? new Date(data.heure_saisie).toLocaleString('fr-FR') : '-'}</p>
             </div>
